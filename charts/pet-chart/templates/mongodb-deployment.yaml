@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pet-chart.fullname" . }}-mongodb
+  labels:
+    {{- include "pet-chart.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "pet-chart.fullname" . }}-mongodb
+  template:
+    metadata:
+      labels:
+        app: {{ include "pet-chart.fullname" . }}-mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: "{{ .Values.mongodb.image }}"
+          imagePullPolicy: {{ .Values.mongodb.pullPolicy }}
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "{{ .Values.mongodb.environment.MONGO_INITDB_ROOT_USERNAME }}"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "{{ .Values.mongodb.environment.MONGO_INITDB_ROOT_PASSWORD }}"
+          resources:
+            {{- toYaml .Values.mongodb.resources | nindent 12 }}

@@ -5,15 +5,60 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: valerykarpau/pet-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: latest
 
+service:
+  type: ClusterIP
+  port: 8080
+
+mongodb:
+  enabled: true
+  image: mongo:latest
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  environment:
+    MONGO_INITDB_ROOT_USERNAME: root
+    MONGO_INITDB_ROOT_PASSWORD: example
   service:
     type: ClusterIP
-    port: 8080
+    port: 27017
 
+kafka:
+  enabled: true
+  image: confluentinc/cp-kafka:latest
+  pullPolicy: IfNotPresent
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+    KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+    KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  service:
+    type: ClusterIP
+    port: 9092
+
+zookeeper:
+  enabled: true
+  image: confluentinc/cp-zookeeper:latest
+  pullPolicy: IfNotPresent
+  environment:
+    ZOOKEEPER_CLIENT_PORT: 2181
+    ZOOKEEPER_TICK_TIME: 2000
+  service:
+    type: ClusterIP
+    port: 2181
 
 imagePullSecrets: []
 nameOverride: ""
@@ -43,10 +88,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false
@@ -78,11 +119,11 @@ resources: {}
 
 livenessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 readinessProbe:
   httpGet:
-    path: /
+    path: /ready
     port: http
 
 autoscaling:

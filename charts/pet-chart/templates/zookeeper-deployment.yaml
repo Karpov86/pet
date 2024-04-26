@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pet-chart.fullname" . }}-zookeeper
+  labels:
+    {{- include "pet-chart.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "pet-chart.fullname" . }}-zookeeper
+  template:
+    metadata:
+      labels:
+        app: {{ include "pet-chart.fullname" . }}-zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: "{{ .Values.zookeeper.image }}"
+          imagePullPolicy: {{ .Values.zookeeper.pullPolicy }}
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "{{ .Values.zookeeper.environment.ZOOKEEPER_CLIENT_PORT }}"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "{{ .Values.zookeeper.environment.ZOOKEEPER_TICK_TIME }}"

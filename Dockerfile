@@ -9,5 +9,5 @@ RUN ./mvnw package
 
 FROM openjdk:17-jdk-slim
 WORKDIR demo
-COPY --from=build target/*.jar demo.jar
-ENTRYPOINT ["java", "-jar", "demo.jar"]
+COPY --from=build target/*.jar pet-app.jar
+ENTRYPOINT ["java", "-jar", "pet-app.jar"]
