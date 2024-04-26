@@ -119,12 +119,12 @@ resources: {}
 
 livenessProbe:
   httpGet:
-    path: /health
-    port: 8080
-readinessProbe:
-  httpGet:
-    path: /ready
-    port: 8080
+    path: /actuator/health/liveness
+    port: http
+  readinessProbe:
+    httpGet:
+      path: /actuator/health/readiness
+      port: http
 
 autoscaling:
   enabled: false
