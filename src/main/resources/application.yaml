@@ -3,4 +3,5 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:example@localhost:27017/admin
+#      uri: mongodb://mongo-service:27017/admin
+      uri: mongodb://root:example@${MONGODB_SERVICE_HOST:{{ include "pet-chart.fullname" . }}-mongodb}:27017/admin
