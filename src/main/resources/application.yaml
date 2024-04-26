@@ -2,6 +2,3 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:example@localhost:27017/admin
-
-# helm: pet-chart
-# kubectl is now configured to use "minikube" cluster and "default" namespace by default
