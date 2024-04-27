@@ -29,3 +29,20 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  pet-app:
+    image: pet-app
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      SPRING_PROFILES_ACTIVE: default
+    depends_on:
+      - kafka
+      - zookeeper
+      - mongo

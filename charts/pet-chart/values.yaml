@@ -11,7 +11,7 @@ image:
   tag: "latest"
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 resources: { }
@@ -41,7 +41,7 @@ mongodb:
     MONGO_INITDB_ROOT_USERNAME: root
     MONGO_INITDB_ROOT_PASSWORD: example
   service:
-    type: ClusterIP
+    type: NodePort
     port: 27017
 
 kafka:
@@ -58,7 +58,7 @@ kafka:
     KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
   service:
-    type: ClusterIP
+    type: NodePort
     port: 9092
 
 zookeeper:
@@ -69,7 +69,7 @@ zookeeper:
     ZOOKEEPER_CLIENT_PORT: 2181
     ZOOKEEPER_TICK_TIME: 2000
   service:
-    type: ClusterIP
+    type: NodePort
     port: 2181
 
 podAnnotations: { }
