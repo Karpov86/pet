@@ -14,7 +14,7 @@ public class GenerateTestDataUtils {
         return IntStream.range(0, 4)
                 .boxed()
                 .flatMap(i -> IntStream.range(0, i + 1)
-                        .mapToObj(j -> generatePayment("customerId" + i)))
+                        .mapToObj(j -> generatePayment("customerId-" + i)))
                 .toList();
     }
 
@@ -23,7 +23,6 @@ public class GenerateTestDataUtils {
 
         payment.setCustomerId(customerId);
         payment.setAmount(1.00D);
-        payment.setTimestamp(System.currentTimeMillis());
 
         return payment;
     }

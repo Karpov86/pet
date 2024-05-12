@@ -16,13 +16,13 @@ public interface JournalMapper {
     @Mapping(source = "entityName", target = "entityName")
     @Mapping(source = "entityId", target = "entityId")
     @Mapping(source = "operationType", target = "operationType")
-    @Mapping(target = "timestamp", expression = "java(System.currentTimeMillis())")
+    @Mapping(target = "createTime", expression = "java(LocalDateTime.now())")
     Journal journalDtoToJournal(JournalDto journalDto);
 
     @Mapping(source = "entityName", target = "entityName")
     @Mapping(source = "entityId", target = "entityId")
     @Mapping(source = "operationType", target = "operationType")
-    @Mapping(target = "timestamp", expression = "java(System.currentTimeMillis())")
+    @Mapping(target = "createTime", expression = "java(LocalDateTime.now())")
     JournalDto journalToJournalDto(Journal journal);
 
     List<JournalDto> journalsToJournalDtos(List<Journal> journals);

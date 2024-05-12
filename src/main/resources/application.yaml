@@ -8,4 +8,8 @@ spring:
   profiles:
     active: default
 
+kafka:
+  topic:
+    payment: payment-topic
+
 KAFKA_BOOTSTRAP_SERVERS: kafka:19092

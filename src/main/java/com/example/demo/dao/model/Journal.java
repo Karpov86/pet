@@ -1,6 +1,8 @@
 package com.example.demo.dao.model;
 
+import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,5 +16,7 @@ public class Journal {
     private String entityName;
     private String entityId;
     private String operationType;
-    private long timestamp;
+
+    @CreatedDate
+    private LocalDateTime createTime;
 }
