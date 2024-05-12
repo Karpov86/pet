@@ -11,9 +11,10 @@ public class GenerateTestDataUtils {
 
     public static List<Payment> generatePayments() {
 
-        return IntStream.range(0, 3)
+        return IntStream.range(0, 4)
                 .boxed()
-                .flatMap(i -> IntStream.range(0, i).mapToObj(j -> generatePayment("customerId" + i)))
+                .flatMap(i -> IntStream.range(0, i + 1)
+                        .mapToObj(j -> generatePayment("customerId" + i)))
                 .toList();
     }
 
