@@ -1,68 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "pet-app.fullname" . }}
+  name: release-name-pet-app
   labels:
-    {{- include "pet-app.labels" . | nindent 4 }}
+    helm.sh/chart: pet-app-0.1.0
+    app.kubernetes.io/name: pet-app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "pet-app.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: pet-app
+      app.kubernetes.io/instance: release-name
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "pet-app.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        helm.sh/chart: pet-app-0.1.0
+        app.kubernetes.io/name: pet-app
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "pet-app.serviceAccountName" . }}
+      serviceAccountName: release-name-pet-app
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: pet-app
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {}
+          image: "valerykarpau/pet-app:latest"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8080
               protocol: TCP
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://root:k2dv02l32P@my-mongodb:27017/admin"
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            httpGet:
+              path: /actuator/health
+              port: http
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            httpGet:
+              path: /actuator/health
+              port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            {}

@@ -7,9 +7,16 @@ spring:
       uri: mongodb://root:k2dv02l32P@my-mongodb:27017/admin
   kafka:
     bootstrap-servers: my-kafka:9092
-  profiles:
-    active: default
 
 kafka:
   topic:
     payment: payment-topic
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: "always"

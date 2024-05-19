@@ -1,15 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "pet-app.fullname" . }}
+  name: release-name-pet-app
   labels:
-    {{- include "pet-app.labels" . | nindent 4 }}
+    helm.sh/chart: pet-app-0.1.0
+    app.kubernetes.io/name: pet-app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 8080
       targetPort: http
       protocol: TCP
       name: http
   selector:
-    {{- include "pet-app.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: pet-app
+    app.kubernetes.io/instance: release-name
