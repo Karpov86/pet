@@ -4,12 +4,26 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:example@mongo:27017/admin
-  profiles:
-    active: default
+      uri: mongodb://root:k2dv02l32P@my-mongodb:27017/admin
+  kafka:
+    bootstrap-servers: my-kafka:9092
+#    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+#    bootstrap-servers: ${externalDependencies.kafka.host}:${externalDependencies.kafka.port}
+#  profiles:
+#    active: default
+
+#KAFKA_BOOTSTRAP_SERVERS: my-kafka:19092
+#KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+#KAFKA_BOOTSTRAP_SERVERS: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
 
 kafka:
   topic:
     payment: payment-topic
 
-KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+#    consumer:
+#      group-id: your-consumer-group
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      properties:
+#        spring.json.trusted.packages: '*'
+
